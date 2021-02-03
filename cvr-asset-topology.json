@@ -45,7 +45,7 @@
                 "assetNamePattern": "sampleAsset-${System.GraphTopologyName}-${System.GraphInstanceName}",
                 "segmentLength": "PT30S",
                 "localMediaCacheMaximumSizeMiB": "2048",
-                "localMediaCachePath": "/var/lib/azuremediaservices/tmp/",
+                "localMediaCachePath": "/var/tmp/",
                 "inputs": [
                     {
                         "nodeName": "rtspSource"
