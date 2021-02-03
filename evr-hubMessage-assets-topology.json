@@ -1,164 +1,115 @@
 {
-  "@apiVersion": "2.0",
-  "name": "EVRtoAssetsOnObjDetect",
-  "properties": {
-    "description": "Event-based video recording to Assets based on specific objects being detected by external inference engine",
-    "parameters": [
-      {
-        "name": "rtspUserName",
-        "type": "String",
-        "description": "rtsp source user name.",
-        "default": "dummyUserName"
-      },
-      {
-        "name": "rtspPassword",
-        "type": "String",
-        "description": "rtsp source password.",
-        "default": "dummyPassword"
-      },
-      {
-        "name": "rtspUrl",
-        "type": "String",
-        "description": "rtsp Url"
-      },
-      {
-        "name": "hubSourceInput",
-        "type": "String",
-        "description": "input name for hub source",
-        "default": "recordingTrigger"
-      },
-      {
-        "name": "inferencingUrl",
-        "type": "String",
-        "description": "inferencing Url",
-        "default": "http://yolov3/score"
-      },
-      {
-        "name": "inferencingUserName",
-        "type": "String",
-        "description": "inferencing endpoint user name.",
-        "default": "dummyUserName"
-      },
-      {
-        "name": "inferencingPassword",
-        "type": "String",
-        "description": "inferencing endpoint password.",
-        "default": "dummyPassword"
-      },
-      {
-        "name": "imageEncoding",
-        "type": "String",
-        "description": "image encoding for frames",
-        "default": "bmp"
-      },
-      {
-        "name": "hubSinkOutputName",
-        "type": "String",
-        "description": "hub sink output name",
-        "default": "detectedObjects"
-      }
-    ],
-    "sources": [
-      {
-        "@type": "#Microsoft.Media.MediaGraphRtspSource",
-        "name": "rtspSource",
-        "endpoint": {
-          "@type": "#Microsoft.Media.MediaGraphUnsecuredEndpoint",
-          "url": "${rtspUrl}",
-          "credentials": {
-            "@type": "#Microsoft.Media.MediaGraphUsernamePasswordCredentials",
-            "username": "${rtspUserName}",
-            "password": "${rtspPassword}"
-          }
+    "apiVersion": "2.0",
+    "operations": [
+        {
+            "opName": "GraphTopologyList",
+            "opParams": {}
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "Press Enter to continue"
+            }
+        },
+        {
+            "opName": "GraphInstanceList",
+            "opParams": {}
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "Press Enter to continue"
+            }
+        },
+        {
+            "opName": "GraphTopologySet",
+            "opParams": {
+                "topologyUrl": "https://raw.githubusercontent.com/Azure/live-video-analytics/master/MediaGraph/topologies/motion-detection/2.0/topology.json"
+            }
+        },
+        {
+            "opName": "GraphInstanceSet",
+            "opParams": {
+                "name": "Sample-Graph-1",
+                "properties": {
+                    "topologyName": "MotionDetection",
+                    "description": "Sample graph description",
+                    "parameters": [
+                        {
+                            "name": "rtspUrl",
+                            "value": "rtsp://rtspsim:554/media/camera-300s.mkv"
+                        },
+                        {
+                            "name": "rtspUserName",
+                            "value": "testuser"
+                        },
+                        {
+                            "name": "rtspPassword",
+                            "value": "testpassword"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "opName": "GraphInstanceActivate",
+            "opParams": {
+                "name": "Sample-Graph-1"
+            }
+        },
+        {
+            "opName": "GraphInstanceList",
+            "opParams": {}
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "The graph instance has been activated. Press Enter to continue and deactivate the graph instance."
+            }
+        },
+        {
+            "opName": "GraphInstanceDeactivate",
+            "opParams": {
+                "name": "Sample-Graph-1"
+            }
+        },
+        {
+            "opName": "GraphInstanceDelete",
+            "opParams": {
+                "name": "Sample-Graph-1"
+            }
+        },
+        {
+            "opName": "GraphInstanceList",
+            "opParams": {}
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "Press Enter to continue"
+            }
+        },
+        {
+            "opName": "GraphTopologyDelete",
+            "opParams": {
+                "name": "MotionDetection"
+            }
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "Press Enter to continue"
+            }
+        },
+        {
+            "opName": "GraphTopologyList",
+            "opParams": {}
+        },
+        {
+            "opName": "WaitForInput",
+            "opParams": {
+                "message": "Press Enter to continue"
+            }
         }
-      },
-      {
-        "@type": "#Microsoft.Media.MediaGraphIoTHubMessageSource",
-        "name": "iotMessageSource",
-        "hubInputName": "${hubSourceInput}"
-      }
-    ],
-    "processors": [
-      {
-        "@type": "#Microsoft.Media.MediaGraphSignalGateProcessor",
-        "name": "signalGateProcessor",
-        "inputs": [
-          {
-            "nodeName": "iotMessageSource"
-          },
-          {
-            "nodeName": "rtspSource"
-          }
-        ],
-        "activationEvaluationWindow": "PT1S",
-        "activationSignalOffset": "-PT5S",
-        "minimumActivationTime": "PT30S",
-        "maximumActivationTime": "PT30S"
-      },
-      {
-        "@type": "#Microsoft.Media.MediaGraphFrameRateFilterProcessor",
-        "name": "frameRateFilter",
-        "maximumFps": "1.0",
-        "inputs": [
-          {
-            "nodeName": "rtspSource"
-          }
-        ]
-      },
-      {
-        "@type": "#Microsoft.Media.MediaGraphHttpExtension",
-        "name": "inferenceClient",
-        "endpoint": {
-          "@type": "#Microsoft.Media.MediaGraphUnsecuredEndpoint",
-          "url": "${inferencingUrl}",
-          "credentials": {
-            "@type": "#Microsoft.Media.MediaGraphUsernamePasswordCredentials",
-            "username": "${inferencingUserName}",
-            "password": "${inferencingPassword}"
-          }
-        },
-        "image": {
-          "scale": {
-            "mode": "preserveAspectRatio",
-            "width": "416",
-            "height": "416"
-          },
-          "format": {
-            "@type": "#Microsoft.Media.MediaGraphImageFormatEncoded",
-            "encoding": "${imageEncoding}"
-          }
-        },
-        "inputs": [
-          {
-            "nodeName": "frameRateFilter"
-          }
-        ]
-      }
-    ],
-    "sinks": [
-      {
-        "@type": "#Microsoft.Media.MediaGraphIoTHubMessageSink",
-        "name": "hubSink",
-        "hubOutputName": "${hubSinkOutputName}",
-        "inputs": [
-          {
-            "nodeName": "inferenceClient"
-          }
-        ]
-      },
-      {
-        "@type": "#Microsoft.Media.MediaGraphAssetSink",
-        "name": "assetSink",
-        "assetNamePattern": "sampleAssetFromEVR-LVAEdge-${System.DateTime}",
-        "segmentLength": "PT30S",
-        "LocalMediaCacheMaximumSizeMiB": "2048",
-        "localMediaCachePath": "/var/lib/azuremediaservices/tmp/",
-        "inputs": [
-          {
-            "nodeName": "signalGateProcessor"
-          }
-        ]
-      }
     ]
-  }
 }
