@@ -25,7 +25,7 @@
         "name": "inferencingUrl",
         "type": "String",
         "description": "inferencing Url",
-        "default": "http://172.27.90.105/score"
+        "default": "http://172.27.90.107/score"
       },
       {
         "name": "inferencingUserName",
