@@ -26,30 +26,6 @@
         "type": "String",
         "description": "Address of the gRPC Server",
         "default": "tcp://avaextension:5001"
-      },
-      {
-        "name": "grpcExtensionUserName",
-        "type": "String",
-        "description": "inferencing endpoint user name.",
-        "default": "dummyUserName"
-      },
-      {
-        "name": "grpcExtensionPassword",
-        "type": "String",
-        "description": "inferencing endpoint password.",
-        "default": "dummyPassword"
-      },
-      {
-        "name": "extensionConfiguration",
-        "type": "String",
-        "description": "Optional extension configuration for the gRPC server",
-        "default": "{}"
-      },
-      {
-        "name": "hubSinkOutputName",
-        "type": "String",
-        "description": "Hub sink output name",
-        "default": "iothubsinkoutput"
       }
     ],
     "sources": [
