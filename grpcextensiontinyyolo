@@ -87,8 +87,8 @@
         },
         "image": {
           "format": {
-            "@type": "#Microsoft.VideoAnalyzer.ImageFormatRaw",
-            "pixelFormat": "bgr24"
+            "@type": "#Microsoft.VideoAnalyzer.ImageFormatJpeg",
+            "quality": "${imageQuality}"
           }
         },
         "inputs": [
