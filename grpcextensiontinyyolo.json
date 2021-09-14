@@ -56,6 +56,24 @@
         "type": "String",
         "description": "image encoding quality for frames (valid for JPG encoding)",
         "default": "90"
+      },
+      {
+        "name": "imageScaleMode",
+        "type": "String",
+        "description": "image scaling mode",
+        "default": "pad"
+      },
+      {
+        "name": "frameWidth",
+        "type": "String",
+        "description": "Width of the video frame to be received from AVA.",
+        "default": "416"
+      },
+      {
+        "name": "frameHeight",
+        "type": "String",
+        "description": "Height of the video frame to be received from AVA.",
+        "default": "416"
       }
     ],
     "sources": [
@@ -92,6 +110,11 @@
               "SharedMemorySizeMiB": "64"
         },
         "image": {
+          "scale": {
+            "mode": "${imageScaleMode}",
+            "width": "${frameWidth}",
+            "height": "${frameHeight}"
+          },
           "format": {
             "@type": "#Microsoft.VideoAnalyzer.ImageFormatJpeg",
             "quality": "${imageQuality}"
