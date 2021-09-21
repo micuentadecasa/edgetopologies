@@ -55,7 +55,7 @@
         "name": "imageQuality",
         "type": "String",
         "description": "image encoding quality for frames (valid for JPG encoding)",
-        "default": "98"
+        "default": "90"
       },
       {
         "name": "imageScaleMode",
