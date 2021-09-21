@@ -61,7 +61,7 @@
         "name": "imageScaleMode",
         "type": "String",
         "description": "image scaling mode",
-        "default": "preserveAspectRatio"
+        "default": "stretch"
       },
       {
         "name": "frameWidth",
