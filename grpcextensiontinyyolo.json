@@ -61,7 +61,7 @@
         "name": "imageScaleMode",
         "type": "String",
         "description": "image scaling mode",
-        "default": "preserve"
+        "default": "pre"
       },
       {
         "name": "frameWidth",
